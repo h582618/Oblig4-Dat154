@@ -1,0 +1,77 @@
+﻿<Window x:Class="FrontDesk.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FrontDesk"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="1000" Loaded="Window_Loaded">
+
+    <Window.Resources>
+        <CollectionViewSource x:Key="roomViewSource"/>
+
+        <CollectionViewSource x:Key="reservationViewSource" 
+                              Source="{Binding Reservations, Source={StaticResource roomViewSource}}"/>
+        <CollectionViewSource x:Key="taskViewSource" 
+                              Source="{Binding Tasks, Source={StaticResource roomViewSource}}"/>
+
+    </Window.Resources>
+
+    <Grid Margin="0,0,0,-76">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="261*"/>
+            <ColumnDefinition Width="139*"/>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="roomsDataGrid" AutoGenerateColumns="False" 
+          EnableRowVirtualization="True" 
+          ItemsSource="{Binding Source={StaticResource roomViewSource}}" 
+          Margin="13,13,43,474" RowDetailsVisibilityMode="VisibleWhenSelected" Grid.ColumnSpan="2" SelectionChanged="roomsDataGrid_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding RoomId}"
+                            Header="Room id" Width="SizeToHeader"
+                            IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding NumOfBeds}" Header="Num of beds" 
+                            Width="*"/>
+                <DataGridTextColumn Binding="{Binding Size}" Header="NumSize" 
+                            Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid x:Name="reservationsDataGrid" AutoGenerateColumns="False" 
+          EnableRowVirtualization="True" 
+          ItemsSource="{Binding Source={StaticResource reservationViewSource}}" 
+          Margin="13,205,43,289" RowDetailsVisibilityMode="VisibleWhenSelected" 
+          RenderTransformOrigin="0.488,0.251" Grid.ColumnSpan="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding ReservationId}" 
+                            Header="Reservation id" Width="SizeToHeader"
+                            IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding DateStart}" Header="Date Start" 
+                            Width="SizeToHeader"/>
+                <DataGridTextColumn Binding="{Binding DateEnd}" Header="Date end" Width="*"/>
+                <DataGridTextColumn Binding="{Binding CheckedIn}" Header="Checked in" Width="*"/>
+                <DataGridTextColumn Binding="{Binding CheckedOut}" Header="Checked out" Width="*"/>
+                <DataGridTextColumn Binding="{Binding UserUsername}" Header="User" Width="*"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid x:Name="taskDataGrid" AutoGenerateColumns="False" 
+          EnableRowVirtualization="True" 
+          ItemsSource="{Binding Source={StaticResource taskViewSource}}" 
+          Margin="10,396,46,139" RowDetailsVisibilityMode="VisibleWhenSelected" 
+          RenderTransformOrigin="0.488,0.251" Grid.ColumnSpan="2">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding TaskId}" 
+                            Header="Task id" Width="SizeToHeader"
+                            IsReadOnly="True"/>
+                <DataGridTextColumn Binding="{Binding Note}" Header="Note" 
+                            Width="SizeToHeader"/>
+                <DataGridTextColumn Binding="{Binding Info}" Header="Info" Width="*"/>
+                <DataGridTextColumn Binding="{Binding State}" Header="State" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Type}" Header="Type" Width="*"/>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Save" HorizontalAlignment="Left" Margin="420,557,0,83" 
+        Click="Button_Click" Height="20" Width="124"/>
+    </Grid>
+</Window>
