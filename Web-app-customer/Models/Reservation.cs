@@ -1,13 +1,23 @@
-﻿using System;
-namespace Web_app_customer.Models
+﻿namespace Web_app_customer.Models
 {
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public partial class Reservation
+    public class Reservation
     {
+        public Reservation(DateTime dateStart, DateTime dateEnd, int RoomRoomId, string UserUsername)
+        {
+            this.DateStart = dateStart;
+            this.DateEnd = dateEnd;
+            this.RoomRoomId = RoomRoomId;
+            this.UserUsername = UserUsername;
+        }
 
+        public Reservation()
+        {
+
+        }
 
         [Key]
         public int ReservationId { get; set; }
@@ -22,3 +32,4 @@ namespace Web_app_customer.Models
         public virtual User User { get; set; }
     }
 }
+

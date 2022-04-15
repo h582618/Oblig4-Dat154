@@ -1,0 +1,55 @@
+﻿@page "/userPage"
+@using Web_app_customer.Data
+@using Web_app_customer.Models
+@using Web_app_customer.Utils
+@inject HotellService hotellService
+
+<h3>UserPage</h3>
+
+
+
+
+<input type="text" @bind="username"/>
+<button @onclick="getReservations">Fetch reservations</button>
+
+<h4>@username</h4>
+
+@if (reservations.Count() > 0)
+{
+   @foreach(Reservation r in reservations)
+{
+     <p>from @r.DateStart to @r.DateEnd, room: @r.RoomRoomId
+     <button @onclick="()=>checkOut(r)">check inn</button>
+     
+     <button @onclick="()=>checkIn(r)">check out</button>
+     </p>
+}
+}
+            @if (checkedIn)
+            {
+               <p>checked in!</p>
+            }
+            @if (checkedOut)
+            {
+               <p>checked out!</p>
+            }
+@code {
+    string username;
+    bool checkedIn;
+    bool checkedOut;
+    IEnumerable<Reservation> reservations = Array.Empty<Reservation>();
+    public void getReservations()
+    {
+        reservations = hotellService.getReservations(username);
+    }
+    public void checkOut(Reservation r)
+    {
+        hotellService.checkOut(r);
+        checkedOut = true;
+    }
+    public void checkIn(Reservation r)
+    {
+        hotellService.checkIn(r);
+        checkedIn = true;
+    }
+}

@@ -22,13 +22,6 @@ namespace Web_app_customer.Utils
 
             List<Reservation> reservations = _context.reservations.ToList();
 
-            //Console.WriteLine(632401344000000000 > 632085120000000000);
-
-            foreach (var r in potentialRooms)
-            {
-                Console.WriteLine(r.RoomId);
-            }
-
             List<Room> availableRoom = getRooms(from, to, potentialRooms);//potentialRooms.Where(r => r.Reservations.Any(y => !IsBewteenTwoDates(from, y.DateStart, y.DateEnd) && !IsBewteenTwoDates(to, y.DateStart, y.DateEnd))).ToList();
 
             return availableRoom;
@@ -65,6 +58,48 @@ namespace Web_app_customer.Utils
         {
            
             return dt >= start && dt <= end;
+        }
+
+        public void makeReservation(DateTime from, DateTime to, int roomId, string username)
+        {
+            Reservation reservation = new Reservation(from, to, roomId, username);
+            if (!_context.users.Where(u => u.Username == username).ToList().Any())
+            {
+
+                User user = new User();
+                user.Username = username;
+                user.Reservations.Add(reservation);
+                _context.users.Add(user);
+            }
+            else
+            {
+
+                User user = _context.users.Where(u => u.Username == username).ToList().First();
+                user.Reservations.Add(reservation);
+            }
+
+            _context.reservations.Add(reservation);
+            _context.SaveChanges();
+        }
+
+        public IEnumerable<Reservation> getReservations(string username)
+        {
+
+            IEnumerable<Reservation> reservations = _context.reservations.Where(r => r.UserUsername == username).ToList();
+
+            return reservations;
+        }
+        public void checkOut(Reservation r)
+        {
+            r.CheckedOut = true;
+            _context.Update<Reservation>(r);
+            _context.SaveChanges();
+        }
+        public void checkIn(Reservation r)
+        {
+            r.CheckedIn = true;
+            _context.Update<Reservation>(r);
+            _context.SaveChanges();
         }
 
     }
