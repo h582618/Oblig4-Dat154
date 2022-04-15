@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.21
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web-app-customer", "Web-app-customer\Web-app-customer.csproj", "{01D0D7F9-6201-44CB-8B1C-45CD3B84EAF9}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "HotellService", "HotellService\HotellService.shproj", "{E90EB6C6-554A-4397-961B-354C1790022A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GCE-STAFF", "GCE-STAFF\GCE-STAFF.csproj", "{9C1F93F5-AAB5-4526-BBC8-9312FF1AC4F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{01D0D7F9-6201-44CB-8B1C-45CD3B84EAF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01D0D7F9-6201-44CB-8B1C-45CD3B84EAF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01D0D7F9-6201-44CB-8B1C-45CD3B84EAF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01D0D7F9-6201-44CB-8B1C-45CD3B84EAF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C1F93F5-AAB5-4526-BBC8-9312FF1AC4F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C1F93F5-AAB5-4526-BBC8-9312FF1AC4F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C1F93F5-AAB5-4526-BBC8-9312FF1AC4F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C1F93F5-AAB5-4526-BBC8-9312FF1AC4F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {91111820-DA78-4C0F-9F6F-973CF5FF18EB}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,89 @@
+﻿@page "/roomBooking"
+@using Web_app_customer.Data
+@using Web_app_customer.Models
+@using Web_app_customer.Utils
+@using BlazorDateRangePicker;
+@inject HotellService hotellService
+
+<h3>Hotell oblig4</h3>
+
+<h1>Room booking</h1>
+
+
+@* <p>From</p>
+    <input type="datetime" @bind="from" />
+    <p>To</p>
+    <input type="datetime" @bind="to" />
+*@
+<DateRangePicker @bind-StartDate="StartDate" @bind-EndDate="EndDate"> </DateRangePicker>
+
+<p>Amount of beds</p>
+<select @bind="selectedBeds">
+    @for (int i = 0; i < 5; i++)
+    {
+        <option value="@i">@i</option>
+    }
+</select>
+<br />
+<br />
+<br />
+
+<p>Quality</p>
+<select @bind="quality">
+    @for (int i = 0; i < 6; i++)
+    {
+        <option value="@i">@i</option>
+    }
+</select>
+
+@if (hasSearched && !madeReservation)
+{
+    @foreach (Room r in rooms)
+    {
+        <p>
+            RoomNumber: @r.RoomId, Number of beds: @r.NumOfBeds, Quality rating: @r.Size
+            <input type="text" @bind="username">
+
+        </p>
+
+        <br />
+
+    }
+}
+@if (madeReservation)
+{
+    <p>Reservation made!</p>
+}
+@if (hasSearched && rooms.Count() == 0)
+{
+    <p>
+        There is no rooms available
+    </p>
+}
+<br />
+<br />
+<br />
+
+<button @onclick="searchRooms">Find room</button>
+
+@code {
+    public int selectedBeds;
+    public int quality;
+    public string username;
+
+    DateTimeOffset? StartDate { get; set; } = DateTime.Today.AddMonths(-1);
+    DateTimeOffset? EndDate { get; set; } = DateTime.Today.AddDays(1).AddTicks(-1);
+
+    bool hasSearched;
+    bool madeReservation;
+
+    List<Room> rooms = new List<Room>();
+
+    public void searchRooms()
+    {
+        madeReservation = false;
+        rooms = hotellService.searchRoom(StartDate.Value.DateTime, EndDate.Value.DateTime, selectedBeds, quality);
+        hasSearched = true;
+    }
+
+}

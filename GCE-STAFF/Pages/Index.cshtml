@@ -1,0 +1,229 @@
+﻿@page
+@model IndexModel
+@using Web_app_customer.Models;
+@{
+    ViewData["Title"] = "Home page";
+    String emplyoeeType = (String)ViewData["employeeType"];
+    List<Reservation> students = (List<Reservation>)ViewData["reservations"];
+    List<Room> rooms = (List<Room>)ViewData["rooms"];
+    int state = (int)ViewData["state"];
+    List<Web_app_customer.Models.Task> tasks = (List<Web_app_customer.Models.Task>)ViewData["tasks"];
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to GCE hotell staff system</h1>
+    <form asp-page-handler="selectEmployee" method="post">
+        <input type="hidden" value="@state" name="state" />
+        <input checked="@emplyoeeType.Equals("cleaning")" type="radio" name="personnel" value="cleaning" onclick="this.form.submit()" /> Cleaning
+        <input checked="@emplyoeeType.Equals("service")" type="radio" name="personnel" value="service" onclick="this.form.submit()" /> Service
+        <input checked="@emplyoeeType.Equals("maintenance")" type="radio" name="personnel" value="maintenance" onclick="this.form.submit()" /> Maintenance
+    </form>
+
+    <br />
+
+
+    <br />
+    @if (emplyoeeType != "")
+    {
+        <h4> Welcome @emplyoeeType </h4>
+    }
+
+    <br />
+    <br />
+    @* 0 Service
+        1 Maintenance
+        2 Cleaning *@
+    @switch (emplyoeeType)
+    {
+        case "cleaning":
+            <p> Status </p>
+            <form asp-page-handler="SelectState" method="post">
+                <input type="hidden" value="@emplyoeeType" name="personnel" />
+                <select name="state" onchange="this.form.submit()">
+                    <option selected="@(state==-1)" value="-1"> All </option>
+                    <option selected="@(state==0)" value="0"> New </option>
+                    <option selected="@(state==1)" value="1"> In progress </option>
+                    <option selected="@(state==2)" value="2"> Finished </option>
+                </select>
+            </form>
+            <br />
+            <table class="table">
+                <thead>
+
+                    <tr>
+                        <th> Room Number</th>
+                        <th> Info</th>
+                        <th> Note</th>
+                        <th> Status </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in tasks)
+                    {
+                        @if (t.Type == 2 && t.Room.Reservations.All(r => r.CheckedOut) && (t.State == state || state == -1))
+                        {
+
+                            <tr>
+                                <td> @t.RoomRoomId </td>
+                                <td> @t.Info </td>
+                                <td>
+                                    <form asp-page-handler="changeNote" method="post">
+                                        <input type="hidden" value="@t.TaskId" name="taskId" />
+                                        <input type="hidden" value="@state" name="viewState" />
+                                        <input type="hidden" value="@emplyoeeType" name="personnel" />
+                                        <input type="text" name="note" value="@t.Note" />
+                                        <button type="submit"> Change note </button>
+                                    </form>
+                                 </td>
+                                <td>
+                                    <form asp-page-handler="changeState" method="post">
+                                        <input type="hidden" value="@t.TaskId" name="taskId" />
+                                        <input type="hidden" value="@state" name="viewState" />
+                                        <input type="hidden" value="@emplyoeeType" name="personnel" />
+                                        <select name="state" onchange="this.form.submit()">
+                                            <option selected="@(t.State==0)" value="0"> New </option>
+                                            <option selected="@(t.State==1)" value="1"> In progress </option>
+                                            <option selected="@(t.State==2)" value="2"> Finished </option>
+                                        </select>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+
+            </table>
+
+            break;
+        case "service":
+            <p> Status </p>
+            <form asp-page-handler="SelectState" method="post">
+                <input type="hidden" value="@emplyoeeType" name="personnel" />
+                <select name="state" onchange="this.form.submit()">
+                    <option selected="@(state==-1)" value="-1"> All </option>
+                    <option selected="@(state==0)" value="0"> New </option>
+                    <option selected="@(state==1)" value="1"> In progress </option>
+                    <option selected="@(state==2)" value="2"> Finished </option>
+                </select>
+            </form>
+            <br />
+            <table class="table">
+                <thead>
+
+                    <tr>
+                        <th> Room Number</th>
+                        <th> Info</th>
+                        <th> Note</th>
+                        <th> Status </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in tasks)
+                    {
+                        @if (t.Type == 0 && (t.State == state || state == -1))
+                        {
+
+                            <tr>
+                                <td> @t.RoomRoomId </td>
+                                <td> @t.Info </td>
+                                <td>
+                                    <form asp-page-handler="changeNote" method="post">
+                                        <input type="hidden" value="@t.TaskId" name="taskId" />
+                                        <input type="hidden" value="@state" name="viewState" />
+                                        <input type="hidden" value="@emplyoeeType" name="personnel" />
+                                        <input type="text" name="note" value="@t.Note" />
+                                        <button type="submit"> Change note </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <form asp-page-handler="changeState" method="post">
+                                        <input type="hidden" value="@t.TaskId" name="taskId" />
+                                        <input type="hidden" value="@state" name="viewState" />
+                                        <input type="hidden" value="@emplyoeeType" name="personnel" />
+                                        <select name="state" onchange="this.form.submit()">
+                                            <option selected="@(t.State==0)" value="0"> New </option>
+                                            <option selected="@(t.State==1)" value="1"> In progress </option>
+                                            <option selected="@(t.State==2)" value="2"> Finished </option>
+                                        </select>
+                                    </form>
+                                </td>
+                            </tr>
+
+                        }
+
+                    }
+
+                </tbody>
+
+            </table>
+            break;
+
+        case "maintenance":
+            <p> Status </p>
+            <form asp-page-handler="SelectState" method="post">
+                <input type="hidden" value="@emplyoeeType" name="personnel" />
+                <select name="state" onchange="this.form.submit()">
+                    <option selected="@(state==-1)" value="-1"> All </option>
+                    <option selected="@(state==0)" value="0"> New </option>
+                    <option selected="@(state==1)" value="1"> In progress </option>
+                    <option selected="@(state==2)" value="2"> Finished </option>
+                </select>
+            </form>
+            <br />
+            <table class="table">
+                <thead>
+
+                    <tr>
+                        <th> Room Number</th>
+                        <th> Info</th>
+                        <th> Note</th>
+                        <th> Status </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var t in tasks)
+                    {
+                        @if (t.Type == 1 && (t.State == state || state == -1))
+                        {
+
+                            <tr>
+                                <td> @t.RoomRoomId </td>
+                                <td> @t.Info </td>
+                                <td>
+                                    <form asp-page-handler="changeNote" method="post">
+                                        <input type="hidden" value="@t.TaskId" name="taskId" />
+                                        <input type="hidden" value="@state" name="viewState" />
+                                        <input type="hidden" value="@emplyoeeType" name="personnel" />
+                                        <input type="text" name="note" value="@t.Note" />
+                                        <button type="submit"> Change note </button>
+                                    </form>
+                              
+                              </td>
+                                <td>
+                                    <form asp-page-handler="changeState" method="post">
+                                        <input type="hidden" value="@t.TaskId" name="taskId" />
+                                        <input type="hidden" value="@state" name="viewState" />
+                                        <input type="hidden" value="@emplyoeeType" name="personnel" />
+                                        <select name="state" onchange="this.form.submit()">
+                                            <option selected="@(t.State==0)" value="0"> New </option>
+                                            <option selected="@(t.State==1)" value="1"> In progress </option>
+                                            <option selected="@(t.State==2)" value="2"> Finished </option>
+                                        </select>
+                                    </form>
+                                </td>
+                            </tr>
+
+
+                        }
+                    }
+                </tbody>
+
+            </table>
+            break;
+        default:
+            break;
+
+
+    }
+</div>
